@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="WindToDo.vcxproj" Id="78b455ba-060f-49ec-a275-693ae2cd964d">
+    <Deploy />
+  </Project>
+</Solution>
