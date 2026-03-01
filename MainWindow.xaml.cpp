@@ -82,6 +82,7 @@ namespace winrt::WindToDo::implementation
         presenter.IsMaximizable(false);
 
         appWindow.Title(L"Froggy");
+        appWindow.SetIcon(L"frog.ico");
         appWindow.Resize({ 380, 320 });
 
         // Strip window chrome for a clean popup look
