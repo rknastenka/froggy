@@ -14,8 +14,6 @@ A tiny tray app for Windows 11, no clutter, no distractions, no more set up and 
 
 ---
 
-
-
 <table>
 <tr>
 <td width="50%" valign="top">
@@ -61,7 +59,41 @@ Found a bug? Have a feature idea? Feel free to open an issue or send a pull requ
 Some things that would be cool to add someday:
 - Task categories as colors
 - A light/dark theme toggle
-- Keyboard shortcut to open froggy
+- Keyboard shortcut to open Froggy
+- Publish to the Microsoft Store
+
+</td>
+
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+<h3>Installation</h3>
+
+1. Go to the <a href="../../releases/latest">latest release</a>
+2. Download <strong>WindToDo.cer</strong> and the <strong>.msix</strong> file
+3. Double-click the <code>.cer</code> → Install Certificate → Local Machine → place in <strong>Trusted People</strong> → Finish
+4. Double-click the <code>.msix</code> → click <strong>Install</strong>
+5. Pin <strong>Froggy</strong> to your taskbar
+
+<blockquote>You only need to install the certificate once. Future updates just need the <code>.msix</code>.</blockquote>
+
+</td>
+
+<td width="50%" valign="top">
+
+<h3>Requirements</h3>
+
+- Windows 10 or Windows 11
+- No Visual Studio needed
+- No account, no subscription
+
+<h3>Uninstall</h3>
+
+Settings → Apps → Froggy → Uninstall
 
 </td>
 
