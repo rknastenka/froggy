@@ -8,7 +8,8 @@
 
 <p align="center">
 Just your tasks. Nothing else.<br/>
-A tiny tray app for Windows 11, no clutter, no distractions, no more set up and learning curves for more new apps. <br>
+A tiny tray app for Windows that blends right into your system theme.<br/>
+No clutter, no distractions, no setup wizards or learning curves.<br>
 <strong>Click on the frog, Add your task, Be productive.</strong>
 </p>
 
@@ -58,7 +59,6 @@ Found a bug? Have a feature idea? Feel free to open an issue or send a pull requ
 
 Some things that would be cool to add someday:
 - Task categories as colors
-- A light/dark theme toggle
 - Keyboard shortcut to open Froggy
 - Publish to the Microsoft Store
 
