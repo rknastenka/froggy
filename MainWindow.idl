@@ -1,0 +1,29 @@
+﻿namespace WindToDo
+{
+    [bindable]
+    [default_interface]
+    runtimeclass TaskItem : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        TaskItem();
+        TaskItem(String id, String title);
+
+        String Id;
+        String Title;
+        Boolean IsCompleted;
+        String CreatedAt;
+    }
+
+    [default_interface]
+    runtimeclass MainWindow : Microsoft.UI.Xaml.Window
+    {
+        MainWindow();
+        Windows.Foundation.Collections.IObservableVector<TaskItem> Tasks{ get; };
+
+        void AddTask_Click(Object sender, Microsoft.UI.Xaml.RoutedEventArgs e);
+        void TaskInput_KeyDown(Object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e);
+        void DeleteTask_Click(Object sender, Microsoft.UI.Xaml.RoutedEventArgs e);
+        void CheckBox_Changed(Object sender, Microsoft.UI.Xaml.RoutedEventArgs e);
+
+        static Double CompletedOpacity(Boolean isCompleted);
+    }
+}
