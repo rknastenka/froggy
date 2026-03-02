@@ -29,6 +29,20 @@ namespace winrt::WindToDo::implementation
         SetupTrayIcon();
         LoadTasksAsync();
 
+        // Apply DWM dark mode to match the system theme
+        ApplyDwmDarkMode();
+
+        // Re-apply when the user switches Windows light/dark theme
+        if (auto root = this->Content().try_as<Microsoft::UI::Xaml::FrameworkElement>())
+        {
+            root.ActualThemeChanged([this](
+                Microsoft::UI::Xaml::FrameworkElement const&,
+                Windows::Foundation::IInspectable const&)
+            {
+                ApplyDwmDarkMode();
+            });
+        }
+
         // Start hidden; the tray icon brings the window up
         if (m_hwnd)
         {
@@ -54,6 +68,16 @@ namespace winrt::WindToDo::implementation
     void MainWindow::SetupBackdrop()
     {
         // Reserved for future backdrop effects (e.g. Mica, Acrylic)
+    }
+
+    void MainWindow::ApplyDwmDarkMode()
+    {
+        if (!m_hwnd) return;
+        auto root = this->Content().try_as<Microsoft::UI::Xaml::FrameworkElement>();
+        if (!root) return;
+        BOOL useDark = (root.ActualTheme() == Microsoft::UI::Xaml::ElementTheme::Dark) ? TRUE : FALSE;
+        DwmSetWindowAttribute(m_hwnd, 20 /*DWMWA_USE_IMMERSIVE_DARK_MODE*/,
+            &useDark, sizeof(useDark));
     }
 
     // Configure the window as a compact, borderless, always-on-top widget

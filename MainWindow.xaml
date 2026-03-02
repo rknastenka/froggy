@@ -9,7 +9,9 @@
     mc:Ignorable="d"
     Title="Froggy">
 
-    <Border BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="8" Background="#F2F2F2">
+    <Border BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+           BorderThickness="1" CornerRadius="8"
+           Background="{ThemeResource LayerFillColorDefaultBrush}">
         <Grid RowDefinitions="*,Auto" Padding="16" RowSpacing="12"
               Shadow="{x:Null}" Translation="0,0,0">
 

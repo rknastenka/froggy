@@ -49,6 +49,7 @@ namespace winrt::WindToDo::implementation
         Windows::Foundation::IAsyncAction LoadTasksAsync();
 
         void SetupBackdrop();
+        void ApplyDwmDarkMode();
         void SetupAppWindow();
         void SetupTrayIcon();
         void RemoveTrayIcon();
