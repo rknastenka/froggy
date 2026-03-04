@@ -12,7 +12,6 @@
   <Import Project="packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.props')" />
-  <Import Project="packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -36,6 +35,8 @@
     <UseWinUI>true</UseWinUI>
     <WinUISDKReferences>false</WinUISDKReferences>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -159,11 +160,6 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="WindToDo.rc" />
   </ItemGroup>
   <ItemGroup>
@@ -200,7 +196,6 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\Microsoft.Web.WebView2.1.0.3179.45\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.3179.45\build\native\Microsoft.Web.WebView2.targets')" />
-    <Import Project="packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets" Condition="Exists('packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
@@ -220,8 +215,6 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\Microsoft.Web.WebView2.1.0.3179.45\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Web.WebView2.1.0.3179.45\build\native\Microsoft.Web.WebView2.targets'))" />
-    <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props'))" />
-    <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.props'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.props'))" />
@@ -247,5 +240,38 @@
     <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.props'))" />
     <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
+  </Target>
+  <!--
+    Generate resources.pri for unpackaged deployment.
+    The WinUI XAML loader resolves ms-appx:/// URIs via PRI; without this
+    file the app crashes with HRESULT 0x80070002 / 0x80073D54 at startup.
+  -->
+  <PropertyGroup>
+    <MakePriExe>$(MSBuildProjectDirectory)\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\bin\10.0.26100.0\x64\makepri.exe</MakePriExe>
+    <PriConfigFile>$(MSBuildProjectDirectory)\priconfig.xml</PriConfigFile>
+    <PriStagingDir>$(IntDir)PriStaging\</PriStagingDir>
+  </PropertyGroup>
+  <Target Name="GenerateResourcesPri" AfterTargets="Build"
+          Condition="'$(WindowsPackageType)'=='None'">
+    <!-- Stage app resources (XBF + assets) AND framework PRIs in a clean folder.
+         The framework PRIs (Microsoft.UI.pri, etc.) contain the resource maps
+         for ms-appx:///Microsoft.UI.Xaml/Themes/themeresources.xaml and other
+         WinUI resources. They MUST be merged into the app's resources.pri or
+         the XAML engine cannot resolve framework resource URIs at startup. -->
+    <RemoveDir Directories="$(PriStagingDir)" />
+    <MakeDir Directories="$(PriStagingDir)" />
+    <!-- App XBF files -->
+    <Copy SourceFiles="$(OutDir)App.xbf;$(OutDir)MainWindow.xbf"
+          DestinationFolder="$(PriStagingDir)" SkipUnchangedFiles="false" />
+    <!-- App image assets -->
+    <Copy SourceFiles="@(Image)"
+          DestinationFiles="@(Image->'$(PriStagingDir)%(Identity)')"
+          SkipUnchangedFiles="false" />
+    <!-- Framework PRIs — these carry the resource maps for WinUI theme resources -->
+    <Copy SourceFiles="$(OutDir)Microsoft.UI.pri;$(OutDir)Microsoft.UI.Xaml.Controls.pri;$(OutDir)Microsoft.WindowsAppRuntime.pri"
+          DestinationFolder="$(PriStagingDir)" SkipUnchangedFiles="false"
+          Condition="Exists('$(OutDir)Microsoft.UI.pri')" />
+    <Exec Command="&quot;$(MakePriExe)&quot; new /pr &quot;$(PriStagingDir).&quot; /cf &quot;$(PriConfigFile)&quot; /of &quot;$(OutDir)resources.pri&quot; /in &quot;$(RootNamespace)&quot; /mf AppX /o" />
+    <Message Text="Generated resources.pri (with merged framework PRIs) in $(OutDir)" Importance="High" />
   </Target>
 </Project>

@@ -3,8 +3,9 @@
 #include "TaskItem.h"
 
 #include <winrt/Windows.Data.Json.h>
-#include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Foundation.Collections.h>
+
+#include <filesystem>
 
 namespace winrt::WindToDo
 {
@@ -27,6 +28,11 @@ namespace winrt::WindToDo
             LoadWindowRectAsync();
 
     private:
+        static std::filesystem::path GetDataFolder();
+        static std::filesystem::path GetDataFilePath();
+        static std::wstring ReadFileContents(const std::filesystem::path& path);
+        static void WriteFileContents(const std::filesystem::path& path, const std::wstring& text);
+
         static Windows::Data::Json::JsonObject TaskToJson(
             WindToDo::TaskItem const& task);
         static WindToDo::TaskItem JsonToTask(

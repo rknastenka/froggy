@@ -1,4 +1,4 @@
-name: Build & Release MSIX
+name: Build & Release
 
 # Triggers:
 #  - Push a tag like "v1.0.0"  →  automatic release
@@ -34,65 +34,42 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore packages.config -PackagesDirectory packages -SolutionDirectory .
 
-      # 4. Certificate (Base64-encoded PFX stored as GitHub Secret) 
-      - name: Decode signing certificate
-        shell: pwsh
-        run: |
-          $pfxBytes = [Convert]::FromBase64String("${{ secrets.SIGNING_CERTIFICATE }}")
-          [IO.File]::WriteAllBytes("$env:GITHUB_WORKSPACE\WindToDo_Cert.pfx", $pfxBytes)
-
-      - name: Import cert & export .cer for end-users
-        id: cert
-        shell: pwsh
-        env:
-          PFX_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
-        run: |
-          $password = ConvertTo-SecureString $env:PFX_PASSWORD -AsPlainText -Force
-          $cert = Import-PfxCertificate `
-              -FilePath "$env:GITHUB_WORKSPACE\WindToDo_Cert.pfx" `
-              -CertStoreLocation Cert:\CurrentUser\My `
-              -Password $password
-          # .cer lets users trust the cert with two clicks
-          Export-Certificate -Cert $cert -FilePath "$env:GITHUB_WORKSPACE\WindToDo.cer" -Type CERT
-          echo "THUMBPRINT=$($cert.Thumbprint)" >> $env:GITHUB_ENV
-
-      # 5. Build MSIX 
-      - name: Build MSIX (Release x64)
+      # 4. Build (unpackaged – no signing needed)
+      - name: Build Release x64
         shell: pwsh
         run: |
           msbuild WindToDo.vcxproj `
             /p:Configuration=Release `
             /p:Platform=x64 `
-            /p:AppxPackageDir="$env:GITHUB_WORKSPACE\AppxPackages\" `
-            /p:UapAppxPackageBuildMode=SideloadOnly `
-            /p:AppxBundle=Never `
-            /p:GenerateAppxPackageOnBuild=true `
-            /p:PackageCertificateThumbprint="${{ env.THUMBPRINT }}" `
             /m
 
-      # 6. Locate output & stage release folder
-      - name: Find MSIX and stage release files
-        id: msix
+      # 5. Stage release folder
+      - name: Stage release files
+        id: stage
         shell: pwsh
         run: |
-          $msix = Get-ChildItem -Recurse -Filter "*.msix" -Path "$env:GITHUB_WORKSPACE\AppxPackages" |
-                  Sort-Object LastWriteTime -Descending | Select-Object -First 1
-          if (-not $msix) { Write-Error "No .msix found!"; exit 1 }
-          echo "MSIX_PATH=$($msix.FullName)" >> $env:GITHUB_ENV
-          echo "MSIX_NAME=$($msix.Name)"     >> $env:GITHUB_ENV
-
-          # Stage everything into one folder so users get a single download
-          $stage = "$env:GITHUB_WORKSPACE\release-bundle"
+          $outDir = "x64\Release"
+          $stage  = "$env:GITHUB_WORKSPACE\release-bundle"
           New-Item -ItemType Directory -Path $stage -Force | Out-Null
-          Copy-Item $msix.FullName                              -Destination $stage
-          Copy-Item "$env:GITHUB_WORKSPACE\WindToDo.cer"        -Destination $stage
-          Copy-Item "$env:GITHUB_WORKSPACE\.github\Install.ps1" -Destination $stage
+
+          # Copy the exe and all required DLLs / resources
+          Copy-Item "$outDir\WindToDo.exe"   -Destination $stage
+          Copy-Item "$outDir\*.dll"          -Destination $stage -ErrorAction SilentlyContinue
+          Copy-Item "$outDir\*.pri"          -Destination $stage -ErrorAction SilentlyContinue
+          Copy-Item "$outDir\resources.pri"  -Destination $stage -ErrorAction SilentlyContinue
+          if (Test-Path "$outDir\Assets") {
+            Copy-Item "$outDir\Assets" -Destination "$stage\Assets" -Recurse
+          }
+          # Copy WinUI XAML resources (Microsoft.UI.Xaml directory)
+          Get-ChildItem "$outDir" -Directory -Filter "Microsoft.UI.Xaml" | ForEach-Object {
+            Copy-Item $_.FullName -Destination "$stage\$($_.Name)" -Recurse
+          }
+
           echo "STAGE_DIR=$stage" >> $env:GITHUB_ENV
 
-      # 7. Upload single artifact with MSIX + certificate + installer
-      #    Download from the Actions tab, then create a Release manually.
+      # 6. Upload artifact
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
         with:
-          name: WindToDo-Release
+          name: WindToDo-x64
           path: ${{ env.STAGE_DIR }}

@@ -8,7 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MainWindow.idl" />
-    <Midl Include="TaskItem.idl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -43,6 +42,9 @@
     <Image Include="Assets\LockScreenLogo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-44_altform-unplated.png" />
+    <Image Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
+    <Image Include="Assets\Square44x44Logo.targetsize-256_altform-unplated.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -50,15 +52,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WindToDo.rc" />
   </ItemGroup>
 </Project>

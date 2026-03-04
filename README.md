@@ -73,17 +73,17 @@ Some things that would be cool to add someday:
 
 <table>
 <tr>
-<td width="50%" valign="top">
+<td valign="top">
 
 <h3>Installation</h3>
 
 1. Go to the <a href="../../releases/latest">latest release</a>
-2. Download <strong>WindToDo.cer</strong> and the <strong>.msix</strong> file
-3. Double-click the <code>.cer</code> → Install Certificate → Local Machine → place in <strong>Trusted People</strong> → Finish
-4. Double-click the <code>.msix</code> → click <strong>Install</strong>
+2. Download <strong>WindToDo-x64.zip</strong>
+3. Extract the folder wherever you like
+4. Run <strong>WindToDo.exe</strong>
 5. Pin <strong>Froggy</strong> to your taskbar
 
-<blockquote>You only need to install the certificate once. Future updates just need the <code>.msix</code>.</blockquote>
+<blockquote>No certificates, no admin rights, no installer needed. Just extract and run.</blockquote>
 
 </td>
 
@@ -97,7 +97,7 @@ Some things that would be cool to add someday:
 
 <h3>Uninstall</h3>
 
-Settings → Apps → Froggy → Uninstall
+Delete the folder — that's it. Your saved tasks are stored in <code>%LOCALAPPDATA%\WindToDo</code>, delete that too if you want a clean sweep.
 
 </td>
 

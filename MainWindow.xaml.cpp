@@ -4,6 +4,7 @@
 #include "MainWindow.g.cpp"
 #endif
 
+#include <winrt/Microsoft.UI.h>
 #include <winrt/Microsoft.UI.Windowing.h>
 #include <winrt/Microsoft.UI.Interop.h>
 #include <microsoft.ui.xaml.window.h>
@@ -106,7 +107,17 @@ namespace winrt::WindToDo::implementation
         presenter.IsMaximizable(false);
 
         appWindow.Title(L"Froggy");
-        appWindow.SetIcon(L"frog.ico");
+
+        // Load the icon from the embedded Win32 resource (works unpackaged
+        // without needing a loose .ico file next to the .exe).
+        HICON hIcon = LoadIconW(GetModuleHandleW(nullptr),
+                                MAKEINTRESOURCEW(IDI_TRAYICON));
+        if (hIcon)
+        {
+            auto iconId = Microsoft::UI::GetIconIdFromIcon(hIcon);
+            appWindow.SetIcon(iconId);
+        }
+
         appWindow.Resize({ 380, 320 });
 
         // Strip window chrome for a clean popup look
