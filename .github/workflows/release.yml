@@ -70,8 +70,8 @@ jobs:
             /p:PackageCertificateThumbprint="${{ env.THUMBPRINT }}" `
             /m
 
-      # 6. Locate output 
-      - name: Find MSIX path
+      # 6. Locate output & stage release folder
+      - name: Find MSIX and stage release files
         id: msix
         shell: pwsh
         run: |
@@ -81,15 +81,18 @@ jobs:
           echo "MSIX_PATH=$($msix.FullName)" >> $env:GITHUB_ENV
           echo "MSIX_NAME=$($msix.Name)"     >> $env:GITHUB_ENV
 
-      # 7. Upload artifacts — download from Actions tab, then create a Release manually
-      - name: Upload MSIX
-        uses: actions/upload-artifact@v4
-        with:
-          name: WindToDo-MSIX
-          path: ${{ env.MSIX_PATH }}
+          # Stage everything into one folder so users get a single download
+          $stage = "$env:GITHUB_WORKSPACE\release-bundle"
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          Copy-Item $msix.FullName                              -Destination $stage
+          Copy-Item "$env:GITHUB_WORKSPACE\WindToDo.cer"        -Destination $stage
+          Copy-Item "$env:GITHUB_WORKSPACE\.github\Install.ps1" -Destination $stage
+          echo "STAGE_DIR=$stage" >> $env:GITHUB_ENV
 
-      - name: Upload Certificate
+      # 7. Upload single artifact with MSIX + certificate + installer
+      #    Download from the Actions tab, then create a Release manually.
+      - name: Upload release bundle
         uses: actions/upload-artifact@v4
         with:
-          name: WindToDo-Certificate
-          path: ${{ github.workspace }}/WindToDo.cer
+          name: WindToDo-Release
+          path: ${{ env.STAGE_DIR }}
