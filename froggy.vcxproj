@@ -17,8 +17,8 @@
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{78b455ba-060f-49ec-a275-693ae2cd964d}</ProjectGuid>
-    <ProjectName>WindToDo</ProjectName>
-    <RootNamespace>WindToDo</RootNamespace>
+    <ProjectName>froggy</ProjectName>
+    <RootNamespace>froggy</RootNamespace>
     <!--
       $(TargetName) should be same as $(RootNamespace) so that the produced binaries (.exe/.pri/etc.)
       have a name that matches the .winmd
@@ -160,7 +160,7 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="WindToDo.rc" />
+    <ResourceCompile Include="froggy.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png" />

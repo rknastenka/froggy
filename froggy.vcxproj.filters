@@ -62,6 +62,6 @@
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="WindToDo.rc" />
+    <ResourceCompile Include="froggy.rc" />
   </ItemGroup>
 </Project>

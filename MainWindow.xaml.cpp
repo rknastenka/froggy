@@ -20,7 +20,7 @@ using namespace winrt::Windows::Foundation::Collections;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Input;
 
-namespace winrt::WindToDo::implementation
+namespace winrt::froggy::implementation
 {
     MainWindow::MainWindow()
     {
@@ -57,11 +57,11 @@ namespace winrt::WindToDo::implementation
         RemoveTrayIcon();
     }
 
-    IObservableVector<WindToDo::TaskItem> MainWindow::Tasks()
+    IObservableVector<froggy::TaskItem> MainWindow::Tasks()
     {
         if (!m_tasks)
         {
-            m_tasks = single_threaded_observable_vector<WindToDo::TaskItem>();
+            m_tasks = single_threaded_observable_vector<froggy::TaskItem>();
         }
         return m_tasks;
     }
@@ -338,7 +338,7 @@ namespace winrt::WindToDo::implementation
         CoCreateGuid(&guid);
         wchar_t guidStr[40];
         StringFromGUID2(guid, guidStr, ARRAYSIZE(guidStr));
-        auto task = make<WindToDo::implementation::TaskItem>(
+        auto task = make<froggy::implementation::TaskItem>(
             hstring(guidStr), hstring(text));
 
         Tasks().Append(task);
@@ -370,7 +370,7 @@ namespace winrt::WindToDo::implementation
         [[maybe_unused]] RoutedEventArgs const& e)
     {
         auto button = sender.as<Microsoft::UI::Xaml::Controls::Button>();
-        auto item = button.DataContext().as<WindToDo::TaskItem>();
+        auto item = button.DataContext().as<froggy::TaskItem>();
 
         uint32_t index = 0;
         if (Tasks().IndexOf(item, index))

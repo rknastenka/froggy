@@ -6,12 +6,12 @@ using namespace winrt::Windows::Data::Json;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Foundation::Collections;
 
-namespace winrt::WindToDo
+namespace winrt::froggy
 {
     std::mutex TaskDataStore::s_fileMutex;
 
     // ---------------------------------------------------------------------------
-    //  File helpers – use %LOCALAPPDATA%\WindToDo\ (works unpackaged)
+    //  File helpers – use %LOCALAPPDATA%\froggy\ (works unpackaged)
     // ---------------------------------------------------------------------------
 
     std::filesystem::path TaskDataStore::GetDataFolder()
@@ -21,7 +21,7 @@ namespace winrt::WindToDo
         {
             std::filesystem::path folder{ appData };
             CoTaskMemFree(appData);
-            folder /= L"WindToDo";
+            folder /= L"froggy";
             std::filesystem::create_directories(folder);
             return folder;
         }
@@ -82,7 +82,7 @@ namespace winrt::WindToDo
 
     // ---------------------------------------------------------------------------
 
-    JsonObject TaskDataStore::TaskToJson(WindToDo::TaskItem const& task)
+    JsonObject TaskDataStore::TaskToJson(froggy::TaskItem const& task)
     {
         JsonObject obj;
         obj.SetNamedValue(L"id",          JsonValue::CreateStringValue(task.Id()));
@@ -92,7 +92,7 @@ namespace winrt::WindToDo
         return obj;
     }
 
-    WindToDo::TaskItem TaskDataStore::JsonToTask(JsonObject const& obj)
+    froggy::TaskItem TaskDataStore::JsonToTask(JsonObject const& obj)
     {
         auto id = obj.GetNamedString(L"id", L"");
         auto title = obj.GetNamedString(L"title", L"(untitled)");
@@ -117,7 +117,7 @@ namespace winrt::WindToDo
     }
 
     IAsyncAction TaskDataStore::SaveTasksAsync(
-        IObservableVector<WindToDo::TaskItem> const& tasks)
+        IObservableVector<froggy::TaskItem> const& tasks)
     {
         std::lock_guard lock(s_fileMutex);
 
@@ -137,12 +137,12 @@ namespace winrt::WindToDo
         co_return;
     }
 
-    IAsyncOperation<IObservableVector<WindToDo::TaskItem>>
+    IAsyncOperation<IObservableVector<froggy::TaskItem>>
         TaskDataStore::LoadTasksAsync()
     {
         std::lock_guard lock(s_fileMutex);
 
-        auto tasks = winrt::single_threaded_observable_vector<WindToDo::TaskItem>();
+        auto tasks = winrt::single_threaded_observable_vector<froggy::TaskItem>();
 
         auto filePath = GetDataFilePath();
         auto text = ReadFileContents(filePath);

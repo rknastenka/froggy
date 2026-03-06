@@ -1,4 +1,4 @@
-﻿namespace WindToDo
+﻿namespace froggy
 {
     [bindable]
     [default_interface]

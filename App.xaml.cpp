@@ -5,7 +5,7 @@
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
 
-namespace winrt::WindToDo::implementation
+namespace winrt::froggy::implementation
 {
     App::App()
     {

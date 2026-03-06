@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "TaskItem.g.h"
 
-namespace winrt::WindToDo::implementation
+namespace winrt::froggy::implementation
 {
     struct TaskItem : TaskItemT<TaskItem> {
 
@@ -39,7 +39,7 @@ namespace winrt::WindToDo::implementation
     };
 }
 
-namespace winrt::WindToDo::factory_implementation
+namespace winrt::froggy::factory_implementation
 {
     struct TaskItem : TaskItemT<TaskItem, implementation::TaskItem> {};
 }

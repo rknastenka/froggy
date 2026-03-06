@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <mutex>
 
-namespace winrt::WindToDo
+namespace winrt::froggy
 {
     // Handles reading/writing tasks and window geometry to a local JSON file.
     struct TaskDataStore
@@ -16,10 +16,10 @@ namespace winrt::WindToDo
         static constexpr wchar_t kFileName[] = L"tasks.json";
 
         static Windows::Foundation::IAsyncAction SaveTasksAsync(
-            Windows::Foundation::Collections::IObservableVector<WindToDo::TaskItem> const& tasks);
+            Windows::Foundation::Collections::IObservableVector<froggy::TaskItem> const& tasks);
 
         static Windows::Foundation::IAsyncOperation<
-            Windows::Foundation::Collections::IObservableVector<WindToDo::TaskItem>>
+            Windows::Foundation::Collections::IObservableVector<froggy::TaskItem>>
             LoadTasksAsync();
 
     private:
@@ -29,8 +29,8 @@ namespace winrt::WindToDo
         static void WriteFileContents(const std::filesystem::path& path, const std::wstring& text);
 
         static Windows::Data::Json::JsonObject TaskToJson(
-            WindToDo::TaskItem const& task);
-        static WindToDo::TaskItem JsonToTask(
+            froggy::TaskItem const& task);
+        static froggy::TaskItem JsonToTask(
             Windows::Data::Json::JsonObject const& obj);
 
         static std::mutex s_fileMutex;

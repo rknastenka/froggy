@@ -2,7 +2,7 @@
 
 #include "App.xaml.g.h"
 
-namespace winrt::WindToDo::implementation
+namespace winrt::froggy::implementation
 {
     struct App : AppT<App>
     {
