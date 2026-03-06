@@ -35,11 +35,16 @@ namespace winrt::WindToDo
 
     std::wstring TaskDataStore::ReadFileContents(const std::filesystem::path& path)
     {
-        std::wifstream ifs(path, std::ios::in);
+        std::ifstream ifs(path, std::ios::in | std::ios::binary);
         if (!ifs.is_open()) return {};
-        std::wstringstream wss;
-        wss << ifs.rdbuf();
-        return wss.str();
+        std::string utf8((std::istreambuf_iterator<char>(ifs)),
+                          std::istreambuf_iterator<char>());
+        if (utf8.empty()) return {};
+        int wLen = MultiByteToWideChar(CP_UTF8, 0, utf8.data(), static_cast<int>(utf8.size()), nullptr, 0);
+        if (wLen <= 0) return {};
+        std::wstring result(wLen, L'\0');
+        MultiByteToWideChar(CP_UTF8, 0, utf8.data(), static_cast<int>(utf8.size()), result.data(), wLen);
+        return result;
     }
 
     void TaskDataStore::WriteFileContents(const std::filesystem::path& path, const std::wstring& text)
@@ -51,10 +56,16 @@ namespace winrt::WindToDo
         tmpPath += L".tmp";
 
         {
-            std::wofstream ofs(tmpPath, std::ios::out | std::ios::trunc);
+            int utf8Len = WideCharToMultiByte(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), nullptr, 0, nullptr, nullptr);
+            if (utf8Len <= 0)
+                throw std::runtime_error("WriteFileContents: encoding conversion failed");
+            std::string utf8(utf8Len, '\0');
+            WideCharToMultiByte(CP_UTF8, 0, text.data(), static_cast<int>(text.size()), utf8.data(), utf8Len, nullptr, nullptr);
+
+            std::ofstream ofs(tmpPath, std::ios::out | std::ios::binary | std::ios::trunc);
             if (!ofs.is_open())
                 throw std::runtime_error("WriteFileContents: could not open temp file");
-            ofs << text;
+            ofs.write(utf8.data(), utf8.size());
             ofs.flush();
             if (!ofs.good())
                 throw std::runtime_error("WriteFileContents: write failed");
@@ -83,9 +94,22 @@ namespace winrt::WindToDo
 
     WindToDo::TaskItem TaskDataStore::JsonToTask(JsonObject const& obj)
     {
-        auto item = winrt::make<implementation::TaskItem>(
-            obj.GetNamedString(L"id", L""),
-            obj.GetNamedString(L"title", L"(untitled)"));
+        auto id = obj.GetNamedString(L"id", L"");
+        auto title = obj.GetNamedString(L"title", L"(untitled)");
+
+        // Validate id is non-empty and title is within bounds
+        if (id.empty()) {
+            GUID guid;
+            CoCreateGuid(&guid);
+            wchar_t guidStr[40];
+            StringFromGUID2(guid, guidStr, ARRAYSIZE(guidStr));
+            id = guidStr;
+        }
+        constexpr uint32_t kMaxTitleLength = 500;
+        if (title.size() > kMaxTitleLength)
+            title = hstring(std::wstring_view(title).substr(0, kMaxTitleLength));
+
+        auto item = winrt::make<implementation::TaskItem>(id, title);
 
         item.IsCompleted(obj.GetNamedBoolean(L"isCompleted", false));
         item.CreatedAt(obj.GetNamedString(L"createdAt", L""));

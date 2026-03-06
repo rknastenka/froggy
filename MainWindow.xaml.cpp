@@ -207,7 +207,14 @@ namespace winrt::WindToDo::implementation
         HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam,
         UINT_PTR /*subclassId*/, DWORD_PTR refData)
     {
+        if (msg == WM_NCDESTROY)
+        {
+            RemoveWindowSubclass(hwnd, SubclassProc, 0);
+            return DefSubclassProc(hwnd, msg, wParam, lParam);
+        }
+
         auto* self = reinterpret_cast<MainWindow*>(refData);
+        if (!self) return DefSubclassProc(hwnd, msg, wParam, lParam);
 
         if (msg == WM_ACTIVATE)
         {

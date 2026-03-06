@@ -12,9 +12,10 @@ namespace winrt::WindToDo::implementation
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
         UnhandledException([](IInspectable const&, UnhandledExceptionEventArgs const& e)
         {
+            auto errorMessage = e.Message();
+            OutputDebugStringW((L"Unhandled exception: " + std::wstring(errorMessage) + L"\n").c_str());
             if (IsDebuggerPresent())
             {
-                auto errorMessage = e.Message();
                 __debugbreak();
             }
         });
