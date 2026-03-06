@@ -45,9 +45,29 @@ namespace winrt::WindToDo
 
     void TaskDataStore::WriteFileContents(const std::filesystem::path& path, const std::wstring& text)
     {
-        std::wofstream ofs(path, std::ios::out | std::ios::trunc);
-        if (ofs.is_open())
+        // Write to a temporary file first, then atomically rename to the
+        // target.  This prevents truncating existing data when the write
+        // fails partway (e.g. disk full, permission denied).
+        auto tmpPath = path;
+        tmpPath += L".tmp";
+
+        {
+            std::wofstream ofs(tmpPath, std::ios::out | std::ios::trunc);
+            if (!ofs.is_open())
+                throw std::runtime_error("WriteFileContents: could not open temp file");
             ofs << text;
+            ofs.flush();
+            if (!ofs.good())
+                throw std::runtime_error("WriteFileContents: write failed");
+        }
+
+        // Atomic replace — MoveFileExW with MOVEFILE_REPLACE_EXISTING
+        if (!MoveFileExW(tmpPath.c_str(), path.c_str(), MOVEFILE_REPLACE_EXISTING))
+        {
+            // Clean up the temp file on failure
+            DeleteFileW(tmpPath.c_str());
+            throw std::runtime_error("WriteFileContents: rename failed");
+        }
     }
 
     // ---------------------------------------------------------------------------
