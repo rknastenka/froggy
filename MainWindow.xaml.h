@@ -45,7 +45,7 @@ namespace winrt::WindToDo::implementation
         ULONGLONG m_lastDeactivateTime{ 0 };
 
         void AddTaskFromInput();
-        void SaveTasks();
+        winrt::fire_and_forget SaveTasks();
         Windows::Foundation::IAsyncAction LoadTasksAsync();
 
         void SetupBackdrop();

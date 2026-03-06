@@ -303,10 +303,17 @@ namespace winrt::WindToDo::implementation
         m_isLoading = false;
     }
 
-    void MainWindow::SaveTasks()
+    winrt::fire_and_forget MainWindow::SaveTasks()
     {
-        if (m_isLoading || !m_tasks) return;
-        TaskDataStore::SaveTasksAsync(m_tasks);
+        if (m_isLoading || !m_tasks) co_return;
+        try
+        {
+            co_await TaskDataStore::SaveTasksAsync(m_tasks);
+        }
+        catch (winrt::hresult_error const& ex)
+        {
+            OutputDebugStringW((L"SaveTasks failed: " + std::wstring(ex.message()) + L"\n").c_str());
+        }
     }
 
     void MainWindow::AddTaskFromInput()
