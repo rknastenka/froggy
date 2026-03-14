@@ -1,0 +1,22 @@
+# Visual Studio
+.vs/
+*.vcxproj.user
+
+# Build output
+x64/
+x86/
+ARM64/
+Debug/
+Release/
+Generated Files/
+
+# NuGet packages (restored on build)
+packages/
+
+# MSIX output
+AppPackages/
+BundleArtifacts/
+
+# Signing certificates
+*.pfx
+*.cer

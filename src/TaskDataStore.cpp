@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "TaskDataStore.h"
 
 using namespace winrt;
@@ -35,6 +35,12 @@ namespace winrt::krisp
 
     std::wstring TaskDataStore::ReadFileContents(const std::filesystem::path& path)
     {
+        // Guard against excessively large files (e.g. maliciously crafted JSON)
+        constexpr uintmax_t kMaxFileSize = 1 * 1024 * 1024; // 1 MB
+        std::error_code ec;
+        auto fileSize = std::filesystem::file_size(path, ec);
+        if (ec || fileSize > kMaxFileSize) return {};
+
         std::ifstream ifs(path, std::ios::in | std::ios::binary);
         if (!ifs.is_open()) return {};
         std::string utf8((std::istreambuf_iterator<char>(ifs)),
@@ -82,6 +88,15 @@ namespace winrt::krisp
 
     // ---------------------------------------------------------------------------
 
+    hstring TaskDataStore::GenerateGuid()
+    {
+        GUID guid;
+        CoCreateGuid(&guid);
+        wchar_t buf[40];
+        StringFromGUID2(guid, buf, ARRAYSIZE(buf));
+        return hstring(buf);
+    }
+
     JsonObject TaskDataStore::TaskToJson(krisp::TaskItem const& task)
     {
         JsonObject obj;
@@ -97,14 +112,12 @@ namespace winrt::krisp
         auto id = obj.GetNamedString(L"id", L"");
         auto title = obj.GetNamedString(L"title", L"(untitled)");
 
-        // Validate id is non-empty and title is within bounds
+        // Validate id is non-empty
         if (id.empty()) {
-            GUID guid;
-            CoCreateGuid(&guid);
-            wchar_t guidStr[40];
-            StringFromGUID2(guid, guidStr, ARRAYSIZE(guidStr));
-            id = guidStr;
+            id = GenerateGuid();
         }
+
+        // Cap title length to match the UI-side limit
         constexpr uint32_t kMaxTitleLength = 500;
         if (title.size() > kMaxTitleLength)
             title = hstring(std::wstring_view(title).substr(0, kMaxTitleLength));
@@ -116,7 +129,7 @@ namespace winrt::krisp
         return item;
     }
 
-    IAsyncAction TaskDataStore::SaveTasksAsync(
+    void TaskDataStore::SaveTasksSync(
         IObservableVector<krisp::TaskItem> const& tasks)
     {
         std::lock_guard lock(s_fileMutex);
@@ -134,11 +147,17 @@ namespace winrt::krisp
         root.SetNamedValue(L"tasks", arr);
 
         WriteFileContents(filePath, std::wstring{ root.Stringify() });
+    }
+
+    IAsyncAction TaskDataStore::SaveTasksAsync(
+        IObservableVector<krisp::TaskItem> const& tasks)
+    {
+        SaveTasksSync(tasks);
         co_return;
     }
 
-    IAsyncOperation<IObservableVector<krisp::TaskItem>>
-        TaskDataStore::LoadTasksAsync()
+    IObservableVector<krisp::TaskItem>
+        TaskDataStore::LoadTasksSync()
     {
         std::lock_guard lock(s_fileMutex);
 
@@ -152,11 +171,19 @@ namespace winrt::krisp
             if (JsonObject::TryParse(hstring{ text }, root))
             {
                 auto arr = root.GetNamedArray(L"tasks", JsonArray{});
-                for (uint32_t i = 0; i < arr.Size(); ++i)
+                constexpr uint32_t kMaxTasks = 50;
+                uint32_t limit = (std::min)(arr.Size(), kMaxTasks);
+                for (uint32_t i = 0; i < limit; ++i)
                     tasks.Append(JsonToTask(arr.GetObjectAt(i)));
             }
         }
 
-        co_return tasks;
+        return tasks;
+    }
+
+    IAsyncOperation<IObservableVector<krisp::TaskItem>>
+        TaskDataStore::LoadTasksAsync()
+    {
+        co_return LoadTasksSync();
     }
 }

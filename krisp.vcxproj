@@ -4,7 +4,6 @@
   <Import Project="packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.1.8.260209005\build\native\Microsoft.WindowsAppSDK.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.1.8.260209005\build\native\Microsoft.WindowsAppSDK.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props')" />
-  <Import Project="packages\Microsoft.WindowsAppSDK.Widgets.1.8.251231004\build\native\Microsoft.WindowsAppSDK.Widgets.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.Widgets.1.8.251231004\build\native\Microsoft.WindowsAppSDK.Widgets.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.Runtime.1.8.260209005\build\native\Microsoft.WindowsAppSDK.Runtime.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.Runtime.1.8.260209005\build\native\Microsoft.WindowsAppSDK.Runtime.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.ML.1.8.2124\build\native\Microsoft.WindowsAppSDK.ML.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.ML.1.8.2124\build\native\Microsoft.WindowsAppSDK.ML.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.AI.1.8.47\build\native\Microsoft.WindowsAppSDK.AI.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.AI.1.8.47\build\native\Microsoft.WindowsAppSDK.AI.props')" />
@@ -12,6 +11,7 @@
   <Import Project="packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.props')" />
   <Import Project="packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.props')" />
+  <Import Project="packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props" Condition="Exists('packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
@@ -31,12 +31,12 @@
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.22621.0</WindowsTargetPlatformMinVersion>
     <UseWinUI>true</UseWinUI>
     <WinUISDKReferences>false</WinUISDKReferences>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <WindowsPackageType>None</WindowsPackageType>
-    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <!-- Suppress warning about intentionally removed Microsoft.WindowsAppSDK.Widgets -->
+    <WindowsAppSDKVerifyTransitiveDependencies>false</WindowsAppSDKVerifyTransitiveDependencies>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -87,13 +87,25 @@
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="UserMacros">
+    <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <PackageCertificateThumbprint>04EF66ABEA92FE16102AF828C9DBCA7A92E2E80F</PackageCertificateThumbprint>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Never</AppxBundle>
+    <AppInstallerUri>https://rknastenka.github.io/Krisp/</AppInstallerUri>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <PreprocessorDefinitions>DISABLE_XAML_GENERATED_MAIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;$(GeneratedFilesDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <!-- Note: DISABLE_XAML_GENERATED_MAIN is required because wWinMain is defined in App.xaml.cpp -->
       <WarningLevel>Level4</WarningLevel>
       <LanguageStandard Condition="'$(VisualStudioVersion)' &gt;= '18.0'">stdcpp20</LanguageStandard>
       <LanguageStandard Condition="'$(VisualStudioVersion)' &lt; '18.0'">stdcpp17</LanguageStandard>
@@ -101,6 +113,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>Shell32.lib;Comctl32.lib;Dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4042 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
@@ -123,7 +136,12 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="src\app.manifest" />
+    <Image Include="Assets\LockScreenLogo.png" />
+    <Image Include="Assets\SplashScreen.png" />
+    <Image Include="Assets\Square150x150Logo.png" />
+    <Image Include="Assets\Square44x44Logo.png" />
+    <Image Include="Assets\StoreLogo.png" />
+    <Image Include="Assets\Wide310x150Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -185,6 +203,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\Microsoft.Web.WebView2.1.0.3179.45\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.3179.45\build\native\Microsoft.Web.WebView2.targets')" />
+    <Import Project="packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets" Condition="Exists('packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.InteractiveExperiences.1.8.260125001\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets')" />
@@ -192,7 +211,6 @@
     <Import Project="packages\Microsoft.WindowsAppSDK.AI.1.8.47\build\native\Microsoft.WindowsAppSDK.AI.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.AI.1.8.47\build\native\Microsoft.WindowsAppSDK.AI.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.ML.1.8.2124\build\native\Microsoft.WindowsAppSDK.ML.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.ML.1.8.2124\build\native\Microsoft.WindowsAppSDK.ML.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.Runtime.1.8.260209005\build\native\Microsoft.WindowsAppSDK.Runtime.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.Runtime.1.8.260209005\build\native\Microsoft.WindowsAppSDK.Runtime.targets')" />
-    <Import Project="packages\Microsoft.WindowsAppSDK.Widgets.1.8.251231004\build\native\Microsoft.WindowsAppSDK.Widgets.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.Widgets.1.8.251231004\build\native\Microsoft.WindowsAppSDK.Widgets.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" />
     <Import Project="packages\Microsoft.WindowsAppSDK.1.8.260209005\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('packages\Microsoft.WindowsAppSDK.1.8.260209005\build\native\Microsoft.WindowsAppSDK.targets')" />
     <Import Project="packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.targets')" />
@@ -204,6 +222,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\Microsoft.Web.WebView2.1.0.3179.45\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Web.WebView2.1.0.3179.45\build\native\Microsoft.Web.WebView2.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.props'))" />
+    <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.MSIX.1.7.20250829.1\build\Microsoft.Windows.SDK.BuildTools.MSIX.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.props'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.Base.1.8.251216001\build\native\Microsoft.WindowsAppSDK.Base.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.DWrite.1.8.25122902\build\Microsoft.WindowsAppSDK.DWrite.props'))" />
@@ -218,8 +238,6 @@
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.ML.1.8.2124\build\native\Microsoft.WindowsAppSDK.ML.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.ML.1.8.2124\build\native\Microsoft.WindowsAppSDK.ML.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.Runtime.1.8.260209005\build\native\Microsoft.WindowsAppSDK.Runtime.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.Runtime.1.8.260209005\build\native\Microsoft.WindowsAppSDK.Runtime.props'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.Runtime.1.8.260209005\build\native\Microsoft.WindowsAppSDK.Runtime.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.Runtime.1.8.260209005\build\native\Microsoft.WindowsAppSDK.Runtime.targets'))" />
-    <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.Widgets.1.8.251231004\build\native\Microsoft.WindowsAppSDK.Widgets.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.Widgets.1.8.251231004\build\native\Microsoft.WindowsAppSDK.Widgets.props'))" />
-    <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.Widgets.1.8.251231004\build\native\Microsoft.WindowsAppSDK.Widgets.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.Widgets.1.8.251231004\build\native\Microsoft.WindowsAppSDK.Widgets.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.props'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.WinUI.1.8.260204000\build\native\Microsoft.WindowsAppSDK.WinUI.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.WindowsAppSDK.1.8.260209005\build\native\Microsoft.WindowsAppSDK.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.WindowsAppSDK.1.8.260209005\build\native\Microsoft.WindowsAppSDK.props'))" />
@@ -229,38 +247,5 @@
     <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.props'))" />
     <Error Condition="!Exists('packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\build\Microsoft.Windows.SDK.BuildTools.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Windows.ImplementationLibrary.1.0.260126.7\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
-  </Target>
-  <!--
-    Generate resources.pri for unpackaged deployment.
-    The WinUI XAML loader resolves ms-appx:/// URIs via PRI; without this
-    file the app crashes with HRESULT 0x80070002 / 0x80073D54 at startup.
-  -->
-  <PropertyGroup>
-    <MakePriExe>$(MSBuildProjectDirectory)\packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.7705\bin\10.0.26100.0\x64\makepri.exe</MakePriExe>
-    <PriConfigFile>$(MSBuildProjectDirectory)\priconfig.xml</PriConfigFile>
-    <PriStagingDir>$(IntDir)PriStaging\</PriStagingDir>
-  </PropertyGroup>
-  <Target Name="GenerateResourcesPri" AfterTargets="Build"
-          Condition="'$(WindowsPackageType)'=='None'">
-    <!-- Stage app resources (XBF + assets) AND framework PRIs in a clean folder.
-         The framework PRIs (Microsoft.UI.pri, etc.) contain the resource maps
-         for ms-appx:///Microsoft.UI.Xaml/Themes/themeresources.xaml and other
-         WinUI resources. They MUST be merged into the app's resources.pri or
-         the XAML engine cannot resolve framework resource URIs at startup. -->
-    <RemoveDir Directories="$(PriStagingDir)" />
-    <MakeDir Directories="$(PriStagingDir)" />
-    <!-- App XBF files -->
-    <Copy SourceFiles="$(OutDir)src\App.xbf;$(OutDir)src\MainWindow.xbf"
-          DestinationFolder="$(PriStagingDir)" SkipUnchangedFiles="false" />
-    <!-- App image assets -->
-    <Copy SourceFiles="@(Image)"
-          DestinationFiles="@(Image->'$(PriStagingDir)%(Identity)')"
-          SkipUnchangedFiles="false" />
-    <!-- Framework PRIs — these carry the resource maps for WinUI theme resources -->
-    <Copy SourceFiles="$(OutDir)Microsoft.UI.pri;$(OutDir)Microsoft.UI.Xaml.Controls.pri;$(OutDir)Microsoft.WindowsAppRuntime.pri"
-          DestinationFolder="$(PriStagingDir)" SkipUnchangedFiles="false"
-          Condition="Exists('$(OutDir)Microsoft.UI.pri')" />
-    <Exec Command="&quot;$(MakePriExe)&quot; new /pr &quot;$(PriStagingDir).&quot; /cf &quot;$(PriConfigFile)&quot; /of &quot;$(OutDir)resources.pri&quot; /in &quot;$(RootNamespace)&quot; /mf AppX /o" />
-    <Message Text="Generated resources.pri (with merged framework PRIs) in $(OutDir)" Importance="High" />
   </Target>
 </Project>

@@ -4,15 +4,6 @@
 #include "MainWindow.g.cpp"
 #endif
 
-#include <winrt/Microsoft.UI.h>
-#include <winrt/Microsoft.UI.Windowing.h>
-#include <winrt/Microsoft.UI.Interop.h>
-#include <microsoft.ui.xaml.window.h>
-#include <winrt/Microsoft.UI.Xaml.Input.h>
-#include <winrt/Microsoft.UI.Composition.h>
-#include <winrt/Microsoft.UI.Xaml.Hosting.h>
-#include <dwmapi.h>
-#pragma comment(lib, "dwmapi.lib")
 #include "resource.h"
 using namespace winrt;
 using namespace winrt::Windows::Foundation;
@@ -45,6 +36,9 @@ namespace winrt::krisp::implementation
 
     MainWindow::~MainWindow()
     {
+        // Remove the subclass first so no messages dispatch through a stale `this`.
+        if (m_hwnd)
+            RemoveWindowSubclass(m_hwnd, SubclassProc, 0);
         RemoveTrayIcon();
     }
 
@@ -224,8 +218,6 @@ namespace winrt::krisp::implementation
         nid.hWnd   = m_hwnd;
         nid.uID    = TRAY_UID;
         Shell_NotifyIconW(NIM_DELETE, &nid);
-
-        RemoveWindowSubclass(m_hwnd, SubclassProc, 0);
     }
 
     // Win32 subclass — handles tray clicks & window deactivation
@@ -360,12 +352,8 @@ namespace winrt::krisp::implementation
         if (text.size() > kMaxTaskLength)
             text = hstring(std::wstring_view(text).substr(0, kMaxTaskLength));
 
-        GUID guid;
-        CoCreateGuid(&guid);
-        wchar_t guidStr[40];
-        StringFromGUID2(guid, guidStr, ARRAYSIZE(guidStr));
         auto task = make<krisp::implementation::TaskItem>(
-            hstring(guidStr), hstring(text));
+            TaskDataStore::GenerateGuid(), hstring(text));
 
         Tasks().Append(task);
         TaskInputBox().Text(L"");

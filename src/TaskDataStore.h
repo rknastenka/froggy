@@ -15,6 +15,8 @@ namespace winrt::krisp
     {
         static constexpr wchar_t kFileName[] = L"tasks.json";
 
+        static winrt::hstring GenerateGuid();
+
         static Windows::Foundation::IAsyncAction SaveTasksAsync(
             Windows::Foundation::Collections::IObservableVector<krisp::TaskItem> const& tasks);
 
@@ -23,6 +25,11 @@ namespace winrt::krisp
             LoadTasksAsync();
 
     private:
+        static void SaveTasksSync(
+            Windows::Foundation::Collections::IObservableVector<krisp::TaskItem> const& tasks);
+        static Windows::Foundation::Collections::IObservableVector<krisp::TaskItem>
+            LoadTasksSync();
+
         static std::filesystem::path GetDataFolder();
         static std::filesystem::path GetDataFilePath();
         static std::wstring ReadFileContents(const std::filesystem::path& path);
