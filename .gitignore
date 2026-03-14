@@ -20,3 +20,5 @@ BundleArtifacts/
 # Signing certificates
 *.pfx
 *.cer
+
+Package.StoreAssociation.xml
