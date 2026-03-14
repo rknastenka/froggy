@@ -10,14 +10,14 @@ constexpr UINT IDM_QUIT    = 1002;
 constexpr int  kWindowWidth  = 380;
 constexpr int  kWindowHeight = 320;
 
-namespace winrt::krisp::implementation
+namespace winrt::kyrios::implementation
 {
     struct MainWindow : MainWindowT<MainWindow>
     {
         MainWindow();
         ~MainWindow();
 
-        Windows::Foundation::Collections::IObservableVector<krisp::TaskItem> Tasks();
+        Windows::Foundation::Collections::IObservableVector<kyrios::TaskItem> Tasks();
 
         // XAML event handlers
         void AddTask_Click(
@@ -39,7 +39,7 @@ namespace winrt::krisp::implementation
         static double CompletedOpacity(bool isCompleted);
 
     private:
-        Windows::Foundation::Collections::IObservableVector<krisp::TaskItem>
+        Windows::Foundation::Collections::IObservableVector<kyrios::TaskItem>
             m_tasks{ nullptr };
         HWND m_hwnd{ nullptr };
         bool m_isQuitting{ false };
@@ -71,7 +71,7 @@ namespace winrt::krisp::implementation
     };
 }
 
-namespace winrt::krisp::factory_implementation
+namespace winrt::kyrios::factory_implementation
 {
     struct MainWindow : MainWindowT<MainWindow, implementation::MainWindow>
     {

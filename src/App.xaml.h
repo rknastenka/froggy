@@ -2,7 +2,7 @@
 
 #include "App.xaml.g.h"
 
-namespace winrt::krisp::implementation
+namespace winrt::kyrios::implementation
 {
     struct App : AppT<App>
     {

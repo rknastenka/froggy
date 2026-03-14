@@ -17,8 +17,8 @@
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{78b455ba-060f-49ec-a275-693ae2cd964d}</ProjectGuid>
-    <ProjectName>krisp</ProjectName>
-    <RootNamespace>krisp</RootNamespace>
+    <ProjectName>kyrios</ProjectName>
+    <RootNamespace>kyrios</RootNamespace>
     <!--
       $(TargetName) should be same as $(RootNamespace) so that the produced binaries (.exe/.pri/etc.)
       have a name that matches the .winmd
@@ -90,12 +90,12 @@
   <PropertyGroup Label="UserMacros">
     <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>04EF66ABEA92FE16102AF828C9DBCA7A92E2E80F</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>8ABDEF1E99C3801219BCE10DA7018D1B191A8EB0</PackageCertificateThumbprint>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Never</AppxBundle>
-    <AppInstallerUri>https://rknastenka.github.io/Krisp/</AppInstallerUri>
+    <AppInstallerUri>https://rknastenka.github.io/Kyrios/</AppInstallerUri>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -179,7 +179,7 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="src\krisp.rc" />
+    <ResourceCompile Include="src\kyrios.rc" />
   </ItemGroup>
   <!--
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging

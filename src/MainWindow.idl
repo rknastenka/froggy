@@ -1,4 +1,4 @@
-﻿namespace krisp
+﻿namespace kyrios
 {
     [bindable]
     [default_interface]

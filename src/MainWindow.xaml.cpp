@@ -11,7 +11,7 @@ using namespace winrt::Windows::Foundation::Collections;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Input;
 
-namespace winrt::krisp::implementation
+namespace winrt::kyrios::implementation
 {
     MainWindow::MainWindow()
     {
@@ -42,11 +42,11 @@ namespace winrt::krisp::implementation
         RemoveTrayIcon();
     }
 
-    IObservableVector<krisp::TaskItem> MainWindow::Tasks()
+    IObservableVector<kyrios::TaskItem> MainWindow::Tasks()
     {
         if (!m_tasks)
         {
-            m_tasks = single_threaded_observable_vector<krisp::TaskItem>();
+            m_tasks = single_threaded_observable_vector<kyrios::TaskItem>();
         }
         return m_tasks;
     }
@@ -126,7 +126,7 @@ namespace winrt::krisp::implementation
         presenter.IsMinimizable(false);
         presenter.IsMaximizable(false);
 
-        appWindow.Title(L"krisp");
+        appWindow.Title(L"kyrios");
 
         // Load the icon from the embedded Win32 resource (works unpackaged
         // without needing a loose .ico file next to the .exe).
@@ -205,7 +205,7 @@ namespace winrt::krisp::implementation
         nid.uFlags   = NIF_ICON | NIF_MESSAGE | NIF_TIP;
         nid.uCallbackMessage = WM_TRAYICON;
         nid.hIcon    = hIcon;
-        wcscpy_s(nid.szTip, L"krisp");
+        wcscpy_s(nid.szTip, L"kyrios");
         Shell_NotifyIconW(NIM_ADD, &nid);
     }
 
@@ -289,7 +289,7 @@ namespace winrt::krisp::implementation
                 GetCursorPos(&pt);
 
                 HMENU menu = CreatePopupMenu();
-                AppendMenuW(menu, MF_STRING, IDM_QUIT, L"Quit krisp");
+                AppendMenuW(menu, MF_STRING, IDM_QUIT, L"Quit kyrios");
 
                 SetForegroundWindow(hwnd);
                 UINT cmd = TrackPopupMenu(menu,
@@ -352,7 +352,7 @@ namespace winrt::krisp::implementation
         if (text.size() > kMaxTaskLength)
             text = hstring(std::wstring_view(text).substr(0, kMaxTaskLength));
 
-        auto task = make<krisp::implementation::TaskItem>(
+        auto task = make<kyrios::implementation::TaskItem>(
             TaskDataStore::GenerateGuid(), hstring(text));
 
         Tasks().Append(task);
@@ -384,7 +384,7 @@ namespace winrt::krisp::implementation
         [[maybe_unused]] RoutedEventArgs const& e)
     {
         auto button = sender.as<Microsoft::UI::Xaml::Controls::Button>();
-        auto item = button.DataContext().as<krisp::TaskItem>();
+        auto item = button.DataContext().as<kyrios::TaskItem>();
 
         uint32_t index = 0;
         if (Tasks().IndexOf(item, index))

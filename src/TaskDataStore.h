@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <mutex>
 
-namespace winrt::krisp
+namespace winrt::kyrios
 {
     // Handles reading/writing tasks and window geometry to a local JSON file.
     struct TaskDataStore
@@ -18,16 +18,16 @@ namespace winrt::krisp
         static winrt::hstring GenerateGuid();
 
         static Windows::Foundation::IAsyncAction SaveTasksAsync(
-            Windows::Foundation::Collections::IObservableVector<krisp::TaskItem> const& tasks);
+            Windows::Foundation::Collections::IObservableVector<kyrios::TaskItem> const& tasks);
 
         static Windows::Foundation::IAsyncOperation<
-            Windows::Foundation::Collections::IObservableVector<krisp::TaskItem>>
+            Windows::Foundation::Collections::IObservableVector<kyrios::TaskItem>>
             LoadTasksAsync();
 
     private:
         static void SaveTasksSync(
-            Windows::Foundation::Collections::IObservableVector<krisp::TaskItem> const& tasks);
-        static Windows::Foundation::Collections::IObservableVector<krisp::TaskItem>
+            Windows::Foundation::Collections::IObservableVector<kyrios::TaskItem> const& tasks);
+        static Windows::Foundation::Collections::IObservableVector<kyrios::TaskItem>
             LoadTasksSync();
 
         static std::filesystem::path GetDataFolder();
@@ -36,8 +36,8 @@ namespace winrt::krisp
         static void WriteFileContents(const std::filesystem::path& path, const std::wstring& text);
 
         static Windows::Data::Json::JsonObject TaskToJson(
-            krisp::TaskItem const& task);
-        static krisp::TaskItem JsonToTask(
+            kyrios::TaskItem const& task);
+        static kyrios::TaskItem JsonToTask(
             Windows::Data::Json::JsonObject const& obj);
 
         static std::mutex s_fileMutex;

@@ -38,7 +38,7 @@ jobs:
       - name: Build Release x64
         shell: pwsh
         run: |
-          msbuild krisp.vcxproj `
+          msbuild kyrios.vcxproj `
             /p:Configuration=Release `
             /p:Platform=x64 `
             /m
@@ -53,7 +53,7 @@ jobs:
           New-Item -ItemType Directory -Path $stage -Force | Out-Null
 
           # Copy the exe and all required DLLs / resources
-          Copy-Item "$outDir\krisp.exe"   -Destination $stage
+          Copy-Item "$outDir\kyrios.exe"   -Destination $stage
           Copy-Item "$outDir\*.dll"          -Destination $stage -ErrorAction SilentlyContinue
           Copy-Item "$outDir\*.pri"          -Destination $stage -ErrorAction SilentlyContinue
           Copy-Item "$outDir\resources.pri"  -Destination $stage -ErrorAction SilentlyContinue
@@ -71,5 +71,5 @@ jobs:
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
         with:
-          name: krisp-x64
+          name: kyrios-x64
           path: ${{ env.STAGE_DIR }}

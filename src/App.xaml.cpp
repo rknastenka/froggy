@@ -5,7 +5,7 @@
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
 
-namespace winrt::krisp::implementation
+namespace winrt::kyrios::implementation
 {
     App::App()
     {
@@ -43,7 +43,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
         ::Microsoft::UI::Xaml::Application::Start(
             [](auto&&)
             {
-                winrt::make<winrt::krisp::implementation::App>();
+                winrt::make<winrt::kyrios::implementation::App>();
             });
     }
     catch (winrt::hresult_error const& ex)
@@ -52,7 +52,7 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, PWSTR, int)
         swprintf_s(buf, L"XAML startup failed: 0x%08X  %s",
                    static_cast<uint32_t>(ex.code()), ex.message().c_str());
         OutputDebugStringW(buf);
-        MessageBoxW(nullptr, buf, L"krisp – startup error", MB_ICONERROR | MB_OK);
+        MessageBoxW(nullptr, buf, L"kyrios – startup error", MB_ICONERROR | MB_OK);
     }
 
     winrt::uninit_apartment();

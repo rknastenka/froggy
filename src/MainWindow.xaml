@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Window
-    x:Class="krisp.MainWindow"
+    x:Class="kyrios.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:krisp"
+    xmlns:local="using:kyrios"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="krisp">
+    Title="kyrios">
 
     <Border BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
            BorderThickness="1" CornerRadius="8"

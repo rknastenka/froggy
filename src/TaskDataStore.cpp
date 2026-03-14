@@ -6,12 +6,12 @@ using namespace winrt::Windows::Data::Json;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Foundation::Collections;
 
-namespace winrt::krisp
+namespace winrt::kyrios
 {
     std::mutex TaskDataStore::s_fileMutex;
 
     // ---------------------------------------------------------------------------
-    //  File helpers – use %LOCALAPPDATA%\krisp\ (works unpackaged)
+    //  File helpers – use %LOCALAPPDATA%\kyrios\ (works unpackaged)
     // ---------------------------------------------------------------------------
 
     std::filesystem::path TaskDataStore::GetDataFolder()
@@ -21,7 +21,7 @@ namespace winrt::krisp
         {
             std::filesystem::path folder{ appData };
             CoTaskMemFree(appData);
-            folder /= L"krisp";
+            folder /= L"kyrios";
             std::filesystem::create_directories(folder);
             return folder;
         }
@@ -97,7 +97,7 @@ namespace winrt::krisp
         return hstring(buf);
     }
 
-    JsonObject TaskDataStore::TaskToJson(krisp::TaskItem const& task)
+    JsonObject TaskDataStore::TaskToJson(kyrios::TaskItem const& task)
     {
         JsonObject obj;
         obj.SetNamedValue(L"id",          JsonValue::CreateStringValue(task.Id()));
@@ -107,7 +107,7 @@ namespace winrt::krisp
         return obj;
     }
 
-    krisp::TaskItem TaskDataStore::JsonToTask(JsonObject const& obj)
+    kyrios::TaskItem TaskDataStore::JsonToTask(JsonObject const& obj)
     {
         auto id = obj.GetNamedString(L"id", L"");
         auto title = obj.GetNamedString(L"title", L"(untitled)");
@@ -130,7 +130,7 @@ namespace winrt::krisp
     }
 
     void TaskDataStore::SaveTasksSync(
-        IObservableVector<krisp::TaskItem> const& tasks)
+        IObservableVector<kyrios::TaskItem> const& tasks)
     {
         std::lock_guard lock(s_fileMutex);
 
@@ -150,18 +150,18 @@ namespace winrt::krisp
     }
 
     IAsyncAction TaskDataStore::SaveTasksAsync(
-        IObservableVector<krisp::TaskItem> const& tasks)
+        IObservableVector<kyrios::TaskItem> const& tasks)
     {
         SaveTasksSync(tasks);
         co_return;
     }
 
-    IObservableVector<krisp::TaskItem>
+    IObservableVector<kyrios::TaskItem>
         TaskDataStore::LoadTasksSync()
     {
         std::lock_guard lock(s_fileMutex);
 
-        auto tasks = winrt::single_threaded_observable_vector<krisp::TaskItem>();
+        auto tasks = winrt::single_threaded_observable_vector<kyrios::TaskItem>();
 
         auto filePath = GetDataFilePath();
         auto text = ReadFileContents(filePath);
@@ -181,7 +181,7 @@ namespace winrt::krisp
         return tasks;
     }
 
-    IAsyncOperation<IObservableVector<krisp::TaskItem>>
+    IAsyncOperation<IObservableVector<kyrios::TaskItem>>
         TaskDataStore::LoadTasksAsync()
     {
         co_return LoadTasksSync();

@@ -5,7 +5,7 @@
 using namespace winrt;
 using namespace Microsoft::UI::Xaml::Data;
 
-namespace winrt::krisp::implementation
+namespace winrt::kyrios::implementation
 {
     TaskItem::TaskItem(hstring const& id, hstring const& title)
         : m_id(id), m_title(title)

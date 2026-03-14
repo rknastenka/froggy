@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "TaskItem.g.h"
 
-namespace winrt::krisp::implementation
+namespace winrt::kyrios::implementation
 {
     struct TaskItem : TaskItemT<TaskItem> {
 
@@ -39,7 +39,7 @@ namespace winrt::krisp::implementation
     };
 }
 
-namespace winrt::krisp::factory_implementation
+namespace winrt::kyrios::factory_implementation
 {
     struct TaskItem : TaskItemT<TaskItem, implementation::TaskItem> {};
 }
