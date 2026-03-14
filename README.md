@@ -5,10 +5,10 @@
 
 
 
-# <a href="https://github.com/rknastenka/Kyrios/releases/download/3.25.113.0/KyriosSetup_3_25_113_0.exe" style="color:#a31c2c; text-decoration:none;">Windows To-Do-List System Tray App</a>
+# <a href="https://github.com/rknastenka/Kyrios/releases" style="color:#a31c2c; text-decoration:none;">Windows To-Do-List System Tray App</a>
 
 
-<a href="https://github.com/rknastenka/Kyrios/wiki" style="color:#a31c2c; text-decoration:none;">Help/Wiki</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="" style="color:#a31c2c; text-decoration:none;">Install</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="https://rknastenka.github.io/Kyrios" style="color:#a31c2c; text-decoration:none;">Docs</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="" style="color:#a31c2c; text-decoration:none;">Contribute</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="" style="color:#a31c2c; text-decoration:none;">Support</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="https://github.com/rknastenka/Kyrios/releases" style="color:#a31c2c; text-decoration:none;">History</a>
+<a href="https://github.com/rknastenka/Kyrios/wiki" style="color:#a31c2c; text-decoration:none;">Help/Wiki</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="https://github.com/rknastenka/Kyrios?tab=readme-ov-file#installation" style="color:#a31c2c; text-decoration:none;">Install</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="https://rknastenka.github.io/Kyrios" style="color:#a31c2c; text-decoration:none;">Docs</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="" style="color:#a31c2c; text-decoration:none;">Contribute</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="https://ko-fi.com/rknastenka" style="color:#a31c2c; text-decoration:none;">Support</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="#" style="color:#a31c2c; text-decoration:none;">History</a>
 
 
 <!-- [Docs](Code Overview/Architecture/Contributing Guidelines) -->
