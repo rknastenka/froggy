@@ -1,8 +1,8 @@
 <div align="center">
 
-<p align="">
+
   <img src="docs/banner.png" width="670" alt="krisp Logo" />
-</p>
+
 
 
 # <a href="https://github.com/rknastenka/Krisp/releases/download/3.25.113.0/KrispSetup_3_25_113_0.exe" style="color:#a31c2c; text-decoration:none;">Windows To-Do-List System Tray App</a>
@@ -37,6 +37,15 @@ Krisp is a lightweight Windows to-do list app that lives in your system tray. It
 
 ## Basic Usage
 
+
+<img src="docs/scr.png" width="670"/>
+
+<img src="docs/tsk.png" width="670"/>
+
+<br>
+
 1. Open Krisp by clicking its icon in the system tray
 2. Pin Krisp to your taskbar
 3. Add your tasks and start working.
+
+---
