@@ -19,25 +19,25 @@ Krisp is a lightweight Windows to-do list app that lives in your system tray. It
 
 
 - <a href="https://github.com/rknastenka/Krisp/releases/download/3.25.113.0/KrispSetup_3_25_113_0.exe" style="color:#a31c2c;">Installer</a>
-- <a href="https://github.com/rknastenka/Krisp/releases/download/3.25.113.0/KrispPortable_3_25_113_0.zip" style="color:#a31c2c;">Portable</a>
-- <a href="https://winget.run/pkg/Krisp/Krisp" style="color:#a31c2c;">Winget</a>
-- <a href="https://www.microsoft.com/en-us/store/p/Krisp-cp/9nblggh3zbjq" style="color:#a31c2c;">Windows Store App</a>  
+- *<a href="" style="color:#a31c2c;">Winget</a> — coming soon*
+- *<a href="" style="color:#a31c2c;">Windows Store</a> — coming soon*
 
-<!--  winget install -e --id Krisp.Krisp -->
+
+## Installation
+
+1. Go to the [latest release](https://github.com/rknastenka/Krisp/releases/latest)
+2. Download **`Krisp.cer`** and **`Krisp_x64.msix`**
+3. **Trust the certificate** *(one-time setup)*
+   - Double-click `Krisp.cer` → **Install Certificate**
+   - Store Location: **Local Machine** → Next
+   - Select **Place all certificates in the following store** → Browse → **Trusted People** → OK → Finish
+4. Double-click **`Krisp_x64.msix`** to install
+
+> **Note:** The certificate only needs to be trusted once. Future updates can be installed directly.
 
 
 ## Basic Usage
 
-1. Install Krisp
-3. Open Krisp by clicking its icon in the system tray
-4. Pin Krisp to your taskbar
-4. Add your tasks and start working.
-
-<!-- 
-## Windows Code-Signing Policy
-Free code signing on Windows binaries provided by SignPath.io, certificate by SignPath Foundation.
-<br>
-<br>
-
-<img src="krisp.gif">
- -->
+1. Open Krisp by clicking its icon in the system tray
+2. Pin Krisp to your taskbar
+3. Add your tasks and start working.
